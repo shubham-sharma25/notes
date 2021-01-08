@@ -3,22 +3,26 @@ export const initialState = {
         {
             id: "1",
             title: "A",
-            body: "aaa"
+            body: "aaa",
+            editable:false
         },
         {
             id: "2",
             title: "B",
-            body: "bbb"
+            body: "bbb",
+            editable:false
         },
         {
             id: "3",
             title: "C",
-            body: "ccc"
+            body: "ccc",
+            editable:false
         },
         {
             id: "4",
             title: "D",
-            body: "ddd"
+            body: "ddd",
+            editable:false
         },
     ]
 }

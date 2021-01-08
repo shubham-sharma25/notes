@@ -11,8 +11,12 @@ class Notes extends Component {
             title:"",
             body:"",
             user:"",
-            pass:""
+            pass:"",
+            newTitle:"",
+            newBody:""
         }
+        this.updateTitleRef=React.createRef();
+        this.updateBodyRef=React.createRef();
     }
     
     logIn = (e) => {
@@ -45,7 +49,25 @@ class Notes extends Component {
         this.setState({title: "",body: ""})
         this.props.dispatch({type:"SAVE_NOTE",newNote:newNote})
     }
+    updateNotes =(e)=>{
+        let selectedId = e.target.value;
+        this.props.dispatch({type:"UPDATE_NOTE", selectedId:selectedId})
+    }
+    saveUpdateNotes=(e)=>{
+        if(document.getElementById("update-title").value!=="" && document.getElementById("update-body").value!==""){
+            let newNote={
+            id:e.target.value,
+            title:document.getElementById("update-title").value,
+            body:document.getElementById("update-body").value
+        }
+    this.setState({newTitle: "",newBody: ""})
+    this.props.dispatch({type:"SAVE_UPDATE_NOTE",newNote:newNote})
+} else {
+    alert("Fille title as well as body")
+}
+    }
     render() {
+        console.log(this.props)
         return (
             <div>
                 <Navbar />
@@ -66,8 +88,20 @@ class Notes extends Component {
                             {this.props.notes.notes.map(note => {
                                 return (
                                     <div key={uuid()} className="country-list">
+                                        {note.editable?
+                                        <div>
+                                        <input type="text" className="form-control update-form" id="update-title" ref={this.updateTitleRef} onChange={()=>this.updateTitleRef.current.focus()}/>
+                                        <button className="close" value={note.id} onClick={this.deleteNotes}>&times;</button>
+                                        <button className="close edit" value={note.id} onClick={this.saveUpdateNotes}>Update</button>
+                                        <input type="text" className="form-control update-form" id="update-body" ref={this.updateBodyRef} onChange={()=>this.updateBodyRef.current.focus()}/>
+                                        </div>
+                                        :
+                                        <div>
                                         <h5>{note.title}</h5><button className="close" value={note.id} onClick={this.deleteNotes}>&times;</button>
+                                        <button className="close edit" value={note.id} onClick={this.updateNotes}>edit</button>
                                         {note.body}
+                                        </div>
+                                        }
                                     </div>
                                 )
                             })}
